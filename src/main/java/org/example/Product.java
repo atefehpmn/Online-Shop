@@ -7,6 +7,7 @@ public class Product {
     private String name;
     private double price;
     private int stack;
+    private Seller seller;
     private ArrayList<String> comments = new ArrayList<>();
     public Product(){}
     public Product(String name, double price, int stack) {
@@ -14,6 +15,15 @@ public class Product {
         this.price = price;
         this.stack = stack;
     }
+
+    public Seller getSeller() {
+        return seller;
+    }
+
+    public void setSeller(Seller seller) {
+        this.seller = seller;
+    }
+
     public void addComment(String comment){
         comments.add(comment);
     }

@@ -68,7 +68,7 @@ public class Shop {
         return false;
     }
     public boolean doesSellerExist(String username){
-        for (Seller seller : sellers){
+        for (Seller seller : sellerReq){
             if (seller.getName().equals(username)){
                 return true;
             }
@@ -84,7 +84,8 @@ public class Shop {
         return false;
     }
     public boolean isSellerPasswordCorrect(String username, String password){
-        for (Seller seller : sellers){
+        for (Map.Entry<Seller, String> mapElement : sellerEnterRequest.entrySet()){
+            Seller seller = mapElement.getKey();
             if (seller.getName().equals(username) && seller.getPassword().equals(password)){
                 return true;
             }
@@ -123,17 +124,11 @@ public class Shop {
         }
         return null;
     }
-    public boolean viewSellerRequests(){
-        int n = 1;
-        for (Map.Entry<Seller, String> mapElement : sellerEnterRequest.entrySet()){
-            Seller seller = mapElement.getKey();
-            String status = (mapElement.getValue());
-            if (!status.equals("authorized")) {
-                System.out.println(n + ". " + seller + " status: " + status);
-                n++;
-            }
+    public void viewSellerRequests(){
+        for (int i = 0; i < sellerReq.size(); i++){
+            System.out.print(i + 1);
+            System.out.println(". " + sellerReq.get(i) + " status: " + sellerEnterRequest.get(sellerReq.get(i)));
         }
-        return n != 1;
     }
     public void viewUserRequests(){
         for (int i = 0 ; i < userReq.size(); i++) {
@@ -146,8 +141,8 @@ public class Shop {
         userReq.get(number).addToWallet(userRequest.get(userReq.get(number)));
         userRequest.remove(userReq.get(number), userRequest.get(userReq.get(number)));
         userReq.remove(number);
-        System.out.println(userReq.size());
     }
+
     public boolean doesUserReqExist(){
         return userReq.size()!=0;
     }
@@ -155,14 +150,24 @@ public class Shop {
         userRequest.put(user, amount);
         userReq.add(user);
     }
+    public boolean doesSellerReqExist(){
+        return sellerReq.size() != 0;
+    }
     public void setSellerEnterRequest(Seller seller){
         sellerEnterRequest.put(seller, "notChecked");
+        sellerReq.add(seller);
     }
     public void confirmSellerEnterRequest(int number){
-        sellerEnterRequest.put(sellerReq.get(--number), "authorized");
+        number--;
+        sellerEnterRequest.put(sellerReq.get(number), "authorized");
+        sellers.add(sellerReq.get(number));
+        sellerReq.remove(number);
     }
-    public void rejectSellerEnterRequest(Seller seller){
-        sellerEnterRequest.put(seller, "unauthorized");
+
+    public void rejectSellerEnterRequest(int number){
+        number--;
+        sellerEnterRequest.put(sellerReq.get(number), "unauthorized");
+        sellerReq.remove(number);
     }
     public String findSellerEnterRequest(Seller seller){
         return sellerEnterRequest.get(seller);
@@ -175,5 +180,18 @@ public class Shop {
     }
     public void addToProfit(double amount){
         profit += amount;
+    }
+    public boolean searchProduct(String title){
+        boolean exist = false;
+        for (int i = 0; i < products.size(); i++){
+            if (products.get(i).getName().toLowerCase().contains(title.toLowerCase())){
+                System.out.println((i + 1) + ". " + products.get(i));
+                exist = true;
+            }
+        }
+        return exist;
+    }
+    public Product findProduct(int index){
+        return products.get(index - 1);
     }
 }

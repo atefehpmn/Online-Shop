@@ -92,6 +92,26 @@ public class User extends Account {
         }
         return false;
     }
+    public double getCartPrice(){
+        double t = 0;
+        for (Map.Entry<Product, Integer> mapElement : cart.entrySet()){
+            Product searchPro = mapElement.getKey();
+            int value = (mapElement.getValue());
+            t += searchPro.getPrice() * value;
+        }
+        return t;
+    }
+    public void addOrder(User user){
+        orders.add(new Order(getCartPrice(), allSellers(), user, cart));
+    }
+    public ArrayList<Seller> allSellers(){
+        ArrayList<Seller> allSellers = new ArrayList<>();
+        for (Map.Entry<Product, Integer> mapElement : cart.entrySet()){
+            Product searchPro = mapElement.getKey();
+            allSellers.add(searchPro.getSeller());
+        }
+        return allSellers;
+    }
 
     @Override
     public String toString() {

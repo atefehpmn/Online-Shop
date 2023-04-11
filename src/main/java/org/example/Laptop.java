@@ -6,4 +6,5 @@ public class Laptop extends Electronics{
     public void setGPU(int GPU) {
         this.GPU = GPU;
     }
+
 }

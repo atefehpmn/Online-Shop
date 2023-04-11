@@ -23,9 +23,8 @@ public class Enter {
         switch (choice){
             case 1:
                 Seller seller = new Seller(username, password);
-
-                shop.addSeller(seller);
-                System.out.println("Your account has created successfully!");
+                shop.setSellerEnterRequest(seller);
+                System.out.println("Your request to create an account has been sent to admin(s)");
                 return username;
             case 2:
                 System.out.println("Enter email:");
